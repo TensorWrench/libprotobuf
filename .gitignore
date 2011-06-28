@@ -1,0 +1,9 @@
+.cproject
+.libs
+.project
+*.beam
+.settings
+.eunit
+deps
+ebin
+doc
