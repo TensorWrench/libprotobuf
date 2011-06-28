@@ -1,0 +1,37 @@
+This library can be used stand-alone for debugging purposes, but is largely intended to be a dependency for protoc-gen-erlang.
+
+h2. Decoding
+
+protocol_buffers:decode(Binary).
+
+Will return a list such as:
+
+[{1,{fixed32,<<123:32/unsigned-little-integer>>}}, {2,{length_encoded,<<...>>}}]
+
+where each term in the list is {field_number, {wiretype, value}}.
+
+The three argument function can be used as:
+
+protocol_buffers:decode(Binary, Acc, Fun)
+
+Binary is the binary to decode
+Acc is the starting Accumulator
+Callback has a signature of Callback(Key::integer(), {Wiretype(),Value}, Acc) and returns a new Acc.
+
+h2. Encoding
+
+protocol_buffers:encode(Field, Type, Value)
+Field is the field number.
+Type is one of bool | int32 | int64 | uint32 | uint64 | sint32 | sint64 | fixed32 | fixed64 | sfixed32 | sfixed64 | bytes | string | float | double.
+Value is an appropriate erlang type for Type.  
+
+Note that any type but bytes or string can be a list, which will encode the type as a packed repeated value.
+
+h2.  Features
+* All types.
+* Packed formats.
+* Capacity to merge records (output of one encode as the Acc of the next and binary concatenation have same effect).
+* Zig-zag encoding of sint.
+* Nested binaries.
+* DOES NOT SUPPORT GROUPS.  It is deprecated, anyway.
+
