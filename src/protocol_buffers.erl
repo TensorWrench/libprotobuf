@@ -80,8 +80,10 @@ decode_varint(<<1:1,Int1:7,1:1,Int2:7,1:1,Int3:7,1:1,Int4:7,1:1,Int5:7,1:1,Int6:
 %% @end
 % -------------------------------------------------------------
 -spec encode(integer(),
-             bool | int32 | int64 | uint32 | uint64 | sint32 | sint64 | fixed32 | fixed64 | sfixed32 | sfixed64 | length_encoded | float | double,
+             bool | int32 | int64 | uint32 | uint64 | sint32 | sint64 | fixed32 | fixed64 | sfixed32 | sfixed64 | bytes | string| length_encoded | float | double,
              boolean() | integer() | binary() | float()) ->	iolist().
+encode(_,_,undefined) -> [];
+encode(_,_,[]) -> [];
 encode(Field,bool,true) when is_integer(Field)->
   [encode_varint((Field bsl 3) bor 0),<<1>>];
 encode(Field,bool,false) when is_integer(Field)->

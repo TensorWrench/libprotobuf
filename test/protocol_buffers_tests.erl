@@ -162,9 +162,14 @@ decode_roundtrip_packed_test_() ->
                                   %?debugFmt("Trying ~p with ~p",[Type,I]),
                                   B = iolist_to_binary(protocol_buffers:encode(1,Type,I)),
                                   %?debugFmt("Binary = ~p",[B]),
-                                  [{1,Value}]=protocol_buffers:decode(B),
-                                  %?debugFmt("Trying ~p with ~p =?= ~p ",[Type,I, protocol_buffers:cast(Type,Value)]),
-                                  I =:= protocol_buffers:cast(Type, Value)
+                                  % if I was an empty list (perfectly valid), then nothing was encoded and we should see nothing in return
+                                  case I of
+                                    [] -> I =:= protocol_buffers:decode(B);
+                                    _ ->
+                                      [{1,Value}]=protocol_buffers:decode(B),
+                                      %?debugFmt("Trying ~p with ~p =?= ~p ",[Type,I, protocol_buffers:cast(Type,Value)]),
+                                      I =:= protocol_buffers:cast(Type, Value)
+                                  end
                                 end)
                         ))}}
     end,

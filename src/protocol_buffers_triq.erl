@@ -36,7 +36,7 @@ fixed64() -> uint64().
 sfixed32() -> int32().
 sfixed64() -> int64().
 
-string() -> list(char()).
+string() -> binary().
 
 bytes() -> binary().
 
