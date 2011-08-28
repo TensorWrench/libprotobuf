@@ -88,8 +88,8 @@ encode() ->
    {"Encode a negative sint32",?_assertMatch(<<2:5, 0:3 ,2#10101100,2#00000010>>,iolist_to_binary(protocol_buffers:encode(2,sint32,150)))},
    {"Encode a negative sint64",?_assertMatch(<<2:5, 0:3 ,2#10101100,2#00000010>>,iolist_to_binary(protocol_buffers:encode(2,sint64,150)))},
    
-   {"Encode a float",?_assertMatch(<<2:5,5:3,3.125:32/float>>,iolist_to_binary(protocol_buffers:encode(2,float,3.125)))},
-   {"Encode a double",?_assertMatch(<<2:5,1:3,3.1415:64/float>>,iolist_to_binary(protocol_buffers:encode(2,double,3.1415)))},
+   {"Encode a float",?_assertMatch(<<2:5,5:3,3.125:32/little-float>>,iolist_to_binary(protocol_buffers:encode(2,float,3.125)))},
+   {"Encode a double",?_assertMatch(<<2:5,1:3,3.1415:64/little-float>>,iolist_to_binary(protocol_buffers:encode(2,double,3.1415)))},
    
    {"Encode a fixed32",?_assertMatch(<<2:5, 5:3 , 150:32/unsigned-little-integer>>,iolist_to_binary(protocol_buffers:encode(2,fixed32,150)))},
    {"Encode a fixed64",?_assertMatch(<<2:5, 1:3 ,150:64/unsigned-little-integer>>,iolist_to_binary(protocol_buffers:encode(2,fixed64,150)))},

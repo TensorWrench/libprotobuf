@@ -150,15 +150,15 @@ encode(Field,Type,List) when is_integer(Field), is_list(List), (Type =:= sint32 
   [encode_varint((Field bsl 3) bor 2),encode_varint(iolist_size(B)),B];
 
 encode(Field,float,Val) when is_integer(Field), is_float(Val) ->
-  [encode_varint((Field bsl 3) bor 5),<<Val:32/float>>];
+  [encode_varint((Field bsl 3) bor 5),<<Val:32/little-float>>];
 encode(Field,float,List) when is_integer(Field), is_list(List) ->
-  B=[<<X:32/float>> || X <- List],
+  B=[<<X:32/little-float>> || X <- List],
   [encode_varint((Field bsl 3) bor 2),encode_varint(iolist_size(B)),B];
 
 encode(Field,double,Val) when is_integer(Field), is_float(Val) ->
-  [encode_varint((Field bsl 3) bor 1),<<Val:64/float>>];
+  [encode_varint((Field bsl 3) bor 1),<<Val:64/little-float>>];
 encode(Field,double,List) when is_integer(Field), is_list(List) ->
-  B=[<<X:64/float>> || X <- List],
+  B=[<<X:64/little-float>> || X <- List],
   [encode_varint((Field bsl 3) bor 2),encode_varint(iolist_size(B)),B];
 
 encode(Field,fixed32,Val) when is_integer(Field), is_integer(Val), Val =< 16#ffffffff, Val >= 0 ->
@@ -274,13 +274,13 @@ cast(sfixed64, {length_encoded,<<V:64/little-signed-integer,Rest/binary>>}) -> [
 cast(string, {length_encoded,B}) -> B;
 cast(bytes, {length_encoded,B}) -> B;
 
-cast(float, {fixed32,<<V:32/float>>}) -> V;
-cast(float, {length_encoded,<<V:32/float>>}) -> [V];
-cast(float, {length_encoded,<<V:32/float,Rest/binary>>}) -> [V | cast(float, {length_encoded,Rest})];
+cast(float, {fixed32,<<V:32/little-float>>}) -> V;
+cast(float, {length_encoded,<<V:32/little-float>>}) -> [V];
+cast(float, {length_encoded,<<V:32/little-float,Rest/binary>>}) -> [V | cast(float, {length_encoded,Rest})];
 
-cast(double, {fixed64,<<V:64/float>>}) -> V;
-cast(double, {length_encoded,<<V:64/float>>}) -> [V];
-cast(double, {length_encoded,<<V:64/float,Rest/binary>>}) -> [V | cast(double, {length_encoded,Rest})];
+cast(double, {fixed64,<<V:64/little-float>>}) -> V;
+cast(double, {length_encoded,<<V:64/little-float>>}) -> [V];
+cast(double, {length_encoded,<<V:64/little-float,Rest/binary>>}) -> [V | cast(double, {length_encoded,Rest})];
 
 % since all the specialized types of packed, length encoded fields are handled, this catch-all will handle
 % packed varints of various types
