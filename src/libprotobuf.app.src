@@ -1,13 +1,12 @@
 {application, libprotobuf,
  [
-  {description, ""},
+  {description, "Library functions for protobufs"},
   {vsn, "1"},
   {registered, []},
   {applications, [
                   kernel,
                   stdlib
                  ]},
-  {mod, { libprotobuf, []}},
   {modules,[]},
   {env, []}
  ]}.
